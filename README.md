@@ -146,38 +146,38 @@ If you’re looking into using AngularJS for your project, likely it is going to
 
 ### Custom directives
 
-I believe custom directives is where AngularJS shines. You could break down a complicated application into components and self contain the logic into directives, making things a lot easier on yourself for maintaining and scaling the application in future.
+I believe custom directives is where AngularJS shines. For a complicated application, you would break down functionality into components, allowing you to create something that is self-contained.
+
+In the example below, the view contains a bunch of custom directives that come together to display a smart phone.
 
 ```
 <phone>
-		<speaker></speaker>
-		<screen>
-			<navbar>
-				<h1>Title</h1>
-			</navbar>
-			<container id=“main” position=“main”>				
-				<main>
-					main
-				</main>
-			</container>
-			<container id=“menu” position=“offscreen” align=“right”>
-				<nav>
-					offscreen menu
-				</nav>
-			</container>
-			<utility></utility>
-		</screen>
-		<home-button></home-button>
+	<speaker></speaker>
+	<screen>
+		<navbar>
+			<h1>Title</h1>
+		</navbar>
+		<container id=“main” position=“main”>				
+			<main>
+				main
+			</main>
+		</container>
+		<container id=“menu” position=“offscreen” align=“right”>
+			<nav>
+				offscreen menu
+			</nav>
+		</container>
+		<utility></utility>
+	</screen>
+	<home-button></home-button>
 </phone>
 ```
 
-This was a quick demo to get a point across about how you could Directives in a project. 
-
-By separating the `home-button`, for example.
+If we were to implement the any of these directives, for example the `home-button`, it would be something like below.
 
 ```
 angular
-.module(‘myApp’)
+.module(‘app’)
 .directive(‘homeButton’, function() {
 	return {
 		restrict: ‘E’,
@@ -191,14 +191,22 @@ angular
 			};
 		},
 		controllerAs: ‘homeButtonCtrl’,
-		template: ‘<div class=“home-button”><span class=“home-button-symbol” ng-click=“homeButtonCtrl.clicked()”></span></div>’
+		template: ‘<div class=“home-button”> \
+							 	<span class=“home-button-symbol” \
+											ng-click=“homeButtonCtrl.clicked()”> \
+							 	</span> \
+							</div>’
 	}
 });
 ```
 
-My functions for handling the home button events are contained within this Directive. I could do the same with any states. 
+Note:
+- Elements need to have hyphenated names, directive need to have camel cased names
+- In a project you would likely split the template’s HTML into a file.
 
-Another thing worth mentioning, I could have bounded an  on(‘click’) event to the element in link, this will work, but I have found from experience that using ng-click and other ng event directive make things a bit more transparent about what is happening. I tend to prefer this, even though it feels like bringing back the old JavaScript inline onclick functions.
+The functions for handling the home button events are contained within this directive’s controller. 
+
+In the example, the `ng-click` directive is used to handle the click events. It is possible to have events bound within the link function, but with experience, I’ve found that using the AngularJS directives for your events will make things easier to follow. Someone working on the directive’s view will be able to see which events are bound, without needing to see the JavaScript, if you kept the directive’s template HTML in a separate file.
 
 ### Services and factories
 
@@ -206,6 +214,8 @@ Services and Factories in AngularJS is how you should be managing your model sta
 
 My preference for representing models in AngularJS has always been with a Factory. I find that I tend to use Service only for things to connect to a Provider.
 
+todo: example with a Factory and multiple directives / controllers
+
 ### Providers
 
-
+todo: example with a Promise or AJAX call
